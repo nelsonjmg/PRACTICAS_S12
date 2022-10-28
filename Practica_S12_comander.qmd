@@ -1,0 +1,53 @@
+---
+title: "REGRESION LINEAL SIMPLE (Rcommander)"
+author: "Nelson de Jesus Magaña Godinez"
+format: pdf
+editor: visual
+---
+
+## 1. REGRESIÓN LINEAL SIMPLE
+
+-   **EJEMPLO 1.**
+
+En el archivo "costes.dat" se encuentra la información correspondiente a 34 fábricas de producción en el montaje de placas para ordenador, el archivo contiene la información sobre el costo total (primera columna) y el número de unidades fabricadas (segunda columna). Suponga que deseamos ajustar un modelo de regresión simple a los datos para estimar el costo total en función del número de unidades fabricadas.
+
+```{r}
+library(Rcmdr)
+```
+
+```{r}
+costes <- 
+  read.table("C:/Users/Usuario/Desktop/respaldo/Desktop/PAQUETE R/PRACTICAS_S12/costes.dat.txt",
+   header=TRUE, stringsAsFactors=TRUE, sep="", na.strings="NA",
+   dec=".", strip.white=TRUE)
+```
+
+Lo primero que debemos es hacer es graficar los datos. Para obtener el diagrama de dispersión de las variables el procedimiento es el siguiente: en el menú "Gráficas" seleccionar la opción "Gráfica XY", tal y como se muestra en la figura de la derecha.
+
+```{r}
+xyplot(Costos ~ Unidades, type="p", pch=16, 
+  auto.key=list(border=TRUE), par.settings=simpleTheme(pch=16),
+   scales=list(x=list(relation='same'), 
+  y=list(relation='same')), data=costes)
+```
+
+Al realizar el procedimiento anterior se mostrará un cuadro de dialogo como el de la figura siguiente. En el únicamente debemos elegir las variables que se graficarán. En el recuadro de la parte derecha debemos seleccionar a nuestra variable independiente, la cual hemos dicho que es el número de unidades producidas; mientras que en el recuadro de la derecha debemos elegir nuestra variable dependiente, que para nuestro ejemplo es el costo total. Los demás argumentos se dejan por defecto. El procedimiento se resume en la siguiente figura.
+
+En la figura se aprecia una relación entre las variables por lo que es conveniente intentar ajustar un modelo de regresión a los datos.
+
+Para ajustar un modelo de regresión lineal en la interfaz gráfica de R, el procedimiento es el siguiente: en el menú "Estadísticos" seleccionamos la opción "Ajuste de modelos", finalmente debemos elegir la opción "Regresión lineal". Tal y como se muestra en la siguiente figura.
+
+Al realizar el procedimiento descrito anteriormente nos mostrará un cuadro de dialogo en el que debemos tener en cuenta lo siguiente: el nombre que le daremos al modelo de regresión resultante, este nombre se da en la opción "Introducir un nombre para el modelo". En el recuadro de la izquierda debemos seleccionar a nuestro variable dependiente (Costos); mientras que en el recuadro de la derecha debemos seleccionar a nuestra variable independiente (Unidades). El procedimiento se resume en la figura de la derecha.
+
+```{r}
+RegModel.1 <- lm(Costos~Unidades, data=costes)
+summary(RegModel.1)
+```
+
+En este caso el modelo resultante sería:
+
+costos = 19.38+ 0.1345(unidades)
+
+Se observa que el término constante no es significativo porque el p-valor correspondiente a la prueba de hipótesis $H_0:\beta_0=0$ es 0.0501; y además no tiene interpretación, pues en teoría si no se fabrican unidades no deberían existir costos asociados a la producción.
+
+Como el término constante no es significativo se quitara del modelo, volvemos a realizar los cálculos en la interfaz gráfica. En el menú "Estadísticos" seleccionamos la opción "Ajuste de modelos" y finalmente la opción "Modelo lineal". Esta opción nos permite descartar la constante del modelo (debemos agregar -1 al final de la instrucción). El procedimiento se resume en las dos siguientes figuras.
