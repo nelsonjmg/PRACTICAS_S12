@@ -51,3 +51,26 @@ costos = 19.38+ 0.1345(unidades)
 Se observa que el término constante no es significativo porque el p-valor correspondiente a la prueba de hipótesis $H_0:\beta_0=0$ es 0.0501; y además no tiene interpretación, pues en teoría si no se fabrican unidades no deberían existir costos asociados a la producción.
 
 Como el término constante no es significativo se quitara del modelo, volvemos a realizar los cálculos en la interfaz gráfica. En el menú "Estadísticos" seleccionamos la opción "Ajuste de modelos" y finalmente la opción "Modelo lineal". Esta opción nos permite descartar la constante del modelo (debemos agregar -1 al final de la instrucción). El procedimiento se resume en las dos siguientes figuras.
+
+```{r}
+LinearModel.3 <- lm(Costos ~ Unidades, data=costes)
+summary(LinearModel.3)
+```
+
+En este caso el modelo resultante sería: costos = 0.1588(unidades); el cual es un mejor modelo en términos de variabilidad explicada.
+
+Una vez estimados los parámetros del modelo, el siguiente paso es validarlo, es decir verificar si se cumplen las cuatro hipótesis básicas del modelo. Para verificar esto, podríamos realizar los siguientes pasos:
+
+En el menú "Modelos" seleccionamos la opción "Gráficas", posteriormente seleccionamos la opción "Gráficas básicas del modelo"..
+
+```{r}
+oldpar <- par(oma=c(0,0,3,0), mfrow=c(2,2))
+plot(LinearModel.3)
+par(oldpar)
+```
+
+Para realizar un estudio sobre las observaciones influyentes, lo primero que debemos hacer es guardar en el mismo conjunto de los datos la siguiente información: valores estimados de la variable dependiente, los residuos del modelo, los residuos estudentizados, los elementos en la diagonal de la matriz de sombrero \$ H=X(X'X)\^{-1}\$ y las distancias de Cook. La identificación de puntos atípicos con los residuos estudentizados, los elementos de la matriz sombrero y la distancias de Cook ya fueron mencionados en la parte correspondiente a consola. Note que de los utilizados en esa ocasión no se muestran los valores DFFITS (si los quisieran examinar tendríamos que obtenerlos manualmente).
+
+El procedimiento para obtener las medidas anteriores es el siguiente: en el menú "Modelos" seleccionamos la opción "Añadir las estadísticas de las observaciones a los datos...". Tal y como se muestra en la figura de la derecha. Posteriormente en el cuadro de dialogo que se mostrará elegir todas las opciones que se quieran analizar.
+
+Recordar que una observación es influyente si:
